@@ -15,6 +15,10 @@ Still does not work - will be probably something simple yet cool :)
 
 Explain how to use your project
 
+## How to use
+
+For now - don't!
+
 ## External hardware
 
 List external hardware used in your project (e.g. PMOD, LED display, etc), if any
