@@ -9,7 +9,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+Still does not work - will be probably something simple yet cool :)
 
 ## How to test
 
