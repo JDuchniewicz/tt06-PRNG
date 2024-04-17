@@ -3,30 +3,49 @@
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles
+from cocotb.triggers import ClockCycles, RisingEdge
 
 @cocotb.test()
-async def test_project(dut):
-  dut._log.info("Start")
-  
-  # Our example module doesn't use clock and reset, but we show how to use them here anyway.
-  clock = Clock(dut.clk, 10, units="us")
-  cocotb.start_soon(clock.start())
+async def test_prng_basic_operation(dut):
+    """Test basic PRNG operation including reset and seed change."""
+    clock = Clock(dut.clk, 10, units="us")
+    cocotb.start_soon(clock.start())
 
-  # Reset
-  dut._log.info("Reset")
-  dut.ena.value = 1
-  dut.ui_in.value = 0
-  dut.uio_in.value = 0
-  dut.rst_n.value = 0
-  await ClockCycles(dut.clk, 10)
-  dut.rst_n.value = 1
+    # Reset the PRNG
+    dut.rst_n.value = 0
+    await ClockCycles(dut.clk, 5)
+    dut.rst_n.value = 1
+    await ClockCycles(dut.clk, 5)
 
-  # Set the input values, wait one clock cycle, and check the output
-  dut._log.info("Test")
-  dut.ui_in.value = 20
-  dut.uio_in.value = 30
+    # Set a seed and check for change in output
+    initial_output = int(dut.uo_out.value)
+    dut.ui_in.value = 123  # Example seed
+    await ClockCycles(dut.clk, 1)
+    first_output = int(dut.uo_out.value)
 
-  await ClockCycles(dut.clk, 1)
+    # Assert that the output changes after setting the seed
+    assert first_output != initial_output, "PRNG output did not change with new seed."
 
-  assert dut.uo_out.value == 50
+@cocotb.test()
+async def test_prng_output_variability(dut):
+    """Test that PRNG outputs vary with different seeds."""
+    clock = Clock(dut.clk, 10, units="us")
+    cocotb.start_soon(clock.start())
+    await ClockCycles(dut.clk, 5)
+
+    output_set = set()
+    for seed in range(5):  # Test a small range of seeds
+        dut.rst_n.value = 0
+        await ClockCycles(dut.clk, 5)
+        dut.rst_n.value = 1
+        await ClockCycles(dut.clk, 5)
+
+        dut.ui_in.value = seed
+        await ClockCycles(dut.clk, 10)  # Wait a bit for PRNG to process
+
+        # Collect output
+        output_set.add(int(dut.uo_out.value))
+
+    # Check if at least some outputs were different
+    assert len(output_set) > 1, "PRNG did not produce varied output across different seeds."
+

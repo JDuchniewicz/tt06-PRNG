@@ -5,7 +5,7 @@
 
 `define default_nettype none
 
-module tt_um_prng (
+module tt_um_jduchniewicz_prng (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -26,11 +26,13 @@ module tt_um_prng (
     // left-shifted lower 8-bits and right-shifted 8-bits basing on https:
     // //stackoverflow.com/questions/14497877/how-to-implement-a-pseudo-hardware-random-number-generator
     reg [15:0] lsfr;
+    reg [7:0] out;
+    assign uo_out = out;
 
     wire feedback = lsfr[15] ^ lsfr[14] ^ lsfr[12] ^ lsfr[3];
 
     always @(posedge clk or negedge rst_n) begin
-        if (rst) begin
+        if (rst_n) begin
             lsfr <= {ui_in, ui_in};
         end else begin
             lsfr <= {lsfr[14:0], feedback}; // shift left with feedback
@@ -40,7 +42,7 @@ module tt_um_prng (
     // left shift the upper part, right shift the lower part and XOR them
     // together
     always @* begin
-        uo_out = (lsfr[15:8] << 1 | lsfr[15:8] >> 7) ^ (lsfr[7:0] >> 1 | lsfr[7:0] << 7);
+        out = (lsfr[15:8] << 1 | lsfr[15:8] >> 7) ^ (lsfr[7:0] >> 1 | lsfr[7:0] << 7);
     end
 
 endmodule
