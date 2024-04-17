@@ -32,7 +32,7 @@ module tt_um_jduchniewicz_prng (
     wire feedback = lsfr[15] ^ lsfr[14] ^ lsfr[12] ^ lsfr[3];
 
     always @(posedge clk or negedge rst_n) begin
-        if (rst_n) begin
+        if (!rst_n) begin
             lsfr <= {ui_in, ui_in};
         end else begin
             lsfr <= {lsfr[14:0], feedback}; // shift left with feedback

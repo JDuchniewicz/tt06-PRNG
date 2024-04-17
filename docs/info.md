@@ -9,12 +9,12 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+The project is based on 16-bit [Linear Feedback Shift Register](https://en.wikipedia.org/wiki/Linear-feedback_shift_register) but with a small twist - at each clock cycle the LSFR combines it's output from 2 halves, upper half (bits 15 to 8) is rotated left and the lower (bits 7 to 0) are rotated right and XOR'ed at the end.
+
+Inspired by [this StackOverflow post](https://stackoverflow.com/questions/14497877/how-to-implement-a-pseudo-hardware-random-number-generator).
 
 ## How to test
 
-Explain how to use your project
+You can experiment with different initialization seeds and see how it changes the generated sequence - all 0 initialization does not work, the PRNG always returns 0s from such seed. The proposed usage of this project is as a noise generator that could be fed to e.g. musical synthesizer or be used as a non-cryptographic randomness generator.
 
-## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
