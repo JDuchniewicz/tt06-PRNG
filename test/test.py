@@ -18,13 +18,15 @@ async def test_prng_basic_operation(dut):
     await ClockCycles(dut.clk, 5)
 
     # Set a seed and check for change in output
-    initial_output = int(dut.uo_out.value)
-    dut.ui_in.value = 123  # Example seed
-    await ClockCycles(dut.clk, 1)
+    dut.ui_in.value = 20
+    await ClockCycles(dut.clk, 5)
     first_output = int(dut.uo_out.value)
+    dut.ui_in.value = 123  # Example seed
+    await ClockCycles(dut.clk, 5)
+    second_output = int(dut.uo_out.value)
 
     # Assert that the output changes after setting the seed
-    assert first_output != initial_output, "PRNG output did not change with new seed."
+    assert first_output != second_output, "PRNG output did not change with new seed."
 
 @cocotb.test()
 async def test_prng_output_variability(dut):
