@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
-  discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  title:        "8-bit PRNG"      # Project title
+  author:       "Jakub Duchniewicz"      # Your name
+  discord:      "Celeborth"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
+  description:  "Pure Random Noise Generator using Linear Feedback Shift Register with 2 halves of the 16-bit internal states shifted in different directions and xor'ed"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
@@ -11,33 +11,33 @@ project:
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
-  
+  top_module:  "tt_um_jduchniewicz_prng"
+
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
-  source_files:        
-    - "project.v"
+  source_files:
+    - "tt_um_jduchniewicz_prng.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+  ui[0]: "Bit 0 initial PRNG seed"
+  ui[1]: "Bit 1 initial PRNG seed"
+  ui[2]: "Bit 2 initial PRNG seed"
+  ui[3]: "Bit 3 initial PRNG seed"
+  ui[4]: "Bit 4 initial PRNG seed"
+  ui[5]: "Bit 5 initial PRNG seed"
+  ui[6]: "Bit 6 initial PRNG seed"
+  ui[7]: "Bit 7 initial PRNG seed"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  uo[0]: "Bit 0 output noise"
+  uo[1]: "Bit 1 output noise"
+  uo[2]: "Bit 2 output noise"
+  uo[3]: "Bit 3 output noise"
+  uo[4]: "Bit 4 output noise"
+  uo[5]: "Bit 5 output noise"
+  uo[6]: "Bit 6 output noise"
+  uo[7]: "Bit 7 output noise"
 
   # Bidirectional pins
   uio[0]: ""
