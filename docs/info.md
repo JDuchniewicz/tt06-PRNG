@@ -9,7 +9,7 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-The project is based on 16-bit [Linear Feedback Shift Register](https://en.wikipedia.org/wiki/Linear-feedback_shift_register) but with a small twist - at each clock cycle the LSFR combines it's output from 2 halves, upper half (bits 15 to 8) is rotated left and the lower (bits 7 to 0) are rotated right and XOR'ed at the end.
+The project is based on 16-bit [Linear Feedback Shift Register](https://en.wikipedia.org/wiki/Linear-feedback_shift_register) but with a small twist - at each clock cycle the LFSR combines it's output from 2 halves, upper half (bits 15 to 8) is rotated left and the lower (bits 7 to 0) are rotated right and XOR'ed at the end.
 
 Inspired by [this StackOverflow post](https://stackoverflow.com/questions/14497877/how-to-implement-a-pseudo-hardware-random-number-generator).
 
