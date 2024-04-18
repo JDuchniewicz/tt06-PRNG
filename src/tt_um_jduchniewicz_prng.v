@@ -29,13 +29,13 @@ module tt_um_jduchniewicz_prng (
     reg [7:0] out;    // 8-bit output
     assign uo_out = out;  // Assign the internal 'out' to the module's output
 
-    wire feedback = lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3];  // Feedback tap for LFSR
+    //wire feedback = lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3];  // Feedback tap for LFSR
 
     always @(posedge clk or negedge rst_n) begin
         if (!rst_n) begin
             lfsr <= {ui_in, ui_in};  // Initialize LFSR with the input when reset
         end else if (ena) begin
-            lfsr <= {lfsr[14:0], feedback};  // Update LFSR only if enabled
+            lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3]};  // Update LFSR only if enabled
         end else begin
             lfsr <= lfsr;
         end
