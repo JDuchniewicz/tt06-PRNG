@@ -29,24 +29,17 @@ module tt_um_jduchniewicz_prng (
     reg [7:0] out;    // 8-bit output
     assign uo_out = out;  // Assign the internal 'out' to the module's output
 
-    //wire feedback = lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3];  // Feedback tap for LFSR
-
-    always @(posedge clk or negedge rst_n) begin
-        if (!rst_n) begin
-            lfsr <= {ui_in, ui_in};  // Initialize LFSR with the input when reset
-        end else if (ena) begin
-            lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3]};  // Update LFSR only if enabled
-        end else begin
-            lfsr <= lfsr;
-        end
-        // No else part here; we hold the state of 'lfsr' when not enabled
-    end
-
-    // Update the output 'out' based on the current state of 'lfsr', but only if enabled
-    always @(posedge clk) begin
-        if (ena) begin
-            out <= (lfsr[15:8] << 1 | lfsr[15:8] >> 7) ^ (lfsr[7:0] >> 1 | lfsr[7:0] << 7);
-        end
-    end
-
+	always @(posedge clk) begin
+		if (!rst_n) begin
+			// Synchronize the reset: Reset or initialize LFSR and out within the clocked process.
+			// This makes the reset path to the output synchronous, removing direct combinatorial paths.
+			lfsr <= {ui_in, ui_in}; // Example: Synchronizing reset operation for LFSR.
+			out <= 8'h00; // Ensure 'out' is also reset synchronously.
+		end
+		else if (ena) begin
+			// Normal operation: Update LFSR and out when enabled.
+			lfsr <= {lfsr[14:0], lfsr[15] ^ lfsr[14] ^ lfsr[12] ^ lfsr[3]};
+			out <= (lfsr[15:8] << 1 | lfsr[15:8] >> 7) ^ (lfsr[7:0] >> 1 | lfsr[7:0] << 7);
+		end
+	end
 endmodule
