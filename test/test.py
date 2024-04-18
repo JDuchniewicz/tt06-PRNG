@@ -12,9 +12,11 @@ async def test_prng_basic_operation(dut):
     cocotb.start_soon(clock.start())
 
     # Reset the PRNG
+    dut.ena.value = 0
     dut.rst_n.value = 1
     await ClockCycles(dut.clk, 5)
     dut.rst_n.value = 0
+    dut.ena.value = 1
     await ClockCycles(dut.clk, 5)
 
     # Set a seed and check for change in output
@@ -35,11 +37,13 @@ async def test_prng_output_variability(dut):
     cocotb.start_soon(clock.start())
     await ClockCycles(dut.clk, 5)
 
+    dut.ena.value = 0
     output_set = set()
     for seed in range(5):  # Test a small range of seeds
         dut.rst_n.value = 1
         await ClockCycles(dut.clk, 5)
         dut.rst_n.value = 0
+        dut.ena.value = 1
         await ClockCycles(dut.clk, 5)
 
         dut.ui_in.value = seed
